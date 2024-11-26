@@ -3,7 +3,10 @@ from torchvision import transforms
 import torch.nn as nn
 import cv2
 import torch
-import time
+import sounddevice as sd
+import numpy as np
+
+
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -43,6 +46,8 @@ def prepare_video(video_path, num_frames=32):
     step=int(240/(num_frames-1))     # to calculate which frames to include (we only retain 32 frames from a 10 sec)
 
     for idx in range(total_frames):
+        print(idx)
+        
         
         cap.set(cv2.CAP_PROP_POS_FRAMES, idx)
         ret, frame = cap.read()
@@ -83,8 +88,18 @@ def classify_video_from_stream(stream_url, model):
 
 if __name__ == "__main__":
     # Replace with your stream URL
+  
     stream_url = "http://192.168.18.84:8080/video"
     
     while True:
-        print(classify_video_from_stream(stream_url, model))
+        fall,prob=classify_video_from_stream(stream_url, model)
+        print(fall,prob)
+        if fall==1:
         
+            fs = 44100  # Sampling frequency (samples per second)
+            t = 1.0  # Duration of the sound in seconds
+            frequency = 1000  # Frequency of the sound in Hz
+            samples = np.linspace(0, t, int(fs * t), endpoint=False)
+            sound = np.sin(2 * np.pi * frequency * samples)
+            sd.play(sound, fs)
+            sd.wait()

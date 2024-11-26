@@ -28,7 +28,7 @@ transform = transforms.Compose([
 ])
 
 # Function to extract and preprocess frames
-def prepare_video(video_path, num_frames=16):
+def prepare_video(video_path, num_frames=32):
     cap = cv2.VideoCapture(video_path)
     frames = []
     total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
@@ -73,10 +73,9 @@ def classify_video(video_path, model):
 
 
 
-# Classify the video
-video_path = "fall.mp4"   #near 10 sec video clip
-print( classify_video(video_path, model))
-
+if __name__ == "__main__":
+    video_path = "accident.mp4"   
+    print( classify_video(video_path, model))
 
 
 

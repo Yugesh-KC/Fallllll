@@ -89,7 +89,7 @@ def classify_video_from_stream(stream_url, model):
 if __name__ == "__main__":
     # Replace with your stream URL
   
-    stream_url = "http://192.168.18.84:8080/video"
+    stream_url = ""
     
     while True:
         fall,prob=classify_video_from_stream(stream_url, model)
